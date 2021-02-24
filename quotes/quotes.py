@@ -66,8 +66,8 @@ class Quotes(commands.Cog):
 		#	embed=discord.Embed(title=content, description=byfrom)
 		#	embed.set_footer(text=poster)
 		#	await channel.send(embed=embed)
-		await ctx.send(len(message))
-		await ctx.send(message)
+		await message.send(len(message))
+		await message.send(message)
 
 		#else:
 		#	await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
