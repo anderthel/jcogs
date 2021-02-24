@@ -1,6 +1,6 @@
 import discord
 from redbot.core import commands
-from redbot.core import Config, commands, checks
+from redbot.core import checks, commands, Config
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import escape
 
@@ -47,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, ctx, *items):
+	async def quote_create(self, member, ctx, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
@@ -57,7 +57,7 @@ class Quotes(commands.Cog):
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
 		if len(items) == 2:
-			channel = ctx.author.guild.get_channel(await self.config.guild(ctx.author.guild).quoteset_channel())
+			channel = member.guild.get_channel(await self.config.guild(member.guild).channel())
 			if channel is None:
 				channel = guild.system_channel
 			content = items[0]
