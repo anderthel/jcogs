@@ -56,7 +56,7 @@ class Quotes(commands.Cog):
 		Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
-		if len(items) == 2:
+		if len(items) == 3:
 			channel = message.guild.get_channel(await self.config.guild(message.guild).quoteset_channel())
 			if channel is None:
 				channel = guild.system_channel
