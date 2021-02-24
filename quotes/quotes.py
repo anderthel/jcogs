@@ -1,5 +1,6 @@
 import discord
 from redbot.core import commands
+from redbot.core.bot import Red
 
 class Quotes(commands.Cog):
 	"""A quote formatter and poster"""
