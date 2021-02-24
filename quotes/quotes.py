@@ -47,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, message):
+	async def quote_create(self, message, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
@@ -65,7 +65,6 @@ class Quotes(commands.Cog):
 			poster = ctx.author
 			embed=discord.Embed(title=content, description=byfrom)
 			embed.set_footer(text=poster)
-			await ctx.send(embed=embed)
 			await channel.send(embed=embed)
 			
 		else:
