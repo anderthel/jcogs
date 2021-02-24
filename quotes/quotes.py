@@ -39,9 +39,7 @@ class Quotes(commands.Cog):
 	@commands.group()
 	@commands.guild_only()
 	async def quote(self, ctx: commands.Context):
-		"""Base command for quotes
-		For settings us quoteset.
-		"""
+		"""Base command for quotes"""
 		pass
 
 	@quote.command(name="create")
@@ -56,25 +54,26 @@ class Quotes(commands.Cog):
 		Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
-		if len(items) != 2:
-			await ctx.send(error("Not properly formatted."))
-		else:
+		if len(items) == 2:
 			content = items[0]
 			byfrom = items[1]
 			poster = ctx.author
 			embed=discord.Embed(title=content, description=byfrom)
 			embed.set_footer(text=poster)
 			await ctx.send(embed=embed)
+		else:
+			await ctx.send("Not properly formatted.")
 
-	@commands.group()
+	@quote.command(name="set")
+	@checks.admin_or_permissions(manage_guild=True)
 	@commands.guild_only()
-	async def quoteset(self, ctx: commands.Context):
+	async def quote_set(self, ctx: commands.Context):
 		"""quote maker settings"""
 		pass
 
-	@quoteset.command(name="role")
+	@quote.set.command(name="role")
 	@checks.admin_or_permissions(manage_guild=True)
-	async def quoteset_role(self, ctx: commands.Context, *, role: discord.Role = None):
+	async def quote_set_role(self, ctx: commands.Context, *, role: discord.Role = None):
 		"""Set the minimum role required to create quotes.
 		Default is for everyone to be able to create quotes"""
 		guild = ctx.guild
@@ -87,7 +86,7 @@ class Quotes(commands.Cog):
 
 	@quoteset.command(name="channel")
 	@checks.admin_or_permissions(manage_guild=True)
-	async def quoteset_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+	async def quote_set_channel(self, ctx: commands.Context, channel: discord.TextChannel):
 		"""
 		Sets the channel where quotes will be sent
 		If this is not set, the channel will default to the channel used
