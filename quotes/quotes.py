@@ -65,6 +65,7 @@ class Quotes(commands.Cog):
 			await ctx.send("Not properly formatted.")
 
 	@quote.command(name="set")
+	@commands.group()
 	@checks.admin_or_permissions(manage_guild=True)
 	@commands.guild_only()
 	async def quote_set(self, ctx: commands.Context):
