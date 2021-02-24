@@ -69,7 +69,7 @@ class Quotes(commands.Cog):
 			await channel.send(embed=embed)
 			
 		else:
-			await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
+			await ctx.send("Not properly formatted")
 
 	@commands.group()
 	@checks.admin_or_permissions(manage_guild=True)
