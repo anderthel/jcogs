@@ -57,7 +57,7 @@ class Quotes(commands.Cog):
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
 		if len(items) == 2:
-			channel = get_channel(await self.settings.guild(guild).channel())
+			channel = await self.settings.guild(guild).channel()
 			if channel is None:
 				channel = guild.system_channel
 			content = items[0]
