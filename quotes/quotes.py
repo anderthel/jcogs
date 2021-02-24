@@ -1,106 +1,82 @@
 import discord
-from random import choice as randchoice
-from redbot.core import checks, commands, Config
-from redbot.core.utils.chat_formatting import box, pagify
-from redbot.core.utils.common_filters import filter_various_mentions
+from redbot.core import commands
+from redbot.core import Config, commands, checks
+from redbot.core.bot import Red
+from redbot.core.utils.chat_formatting import pagify, warning
+from redbot.core.i18n import Translator
 
 
 class Quotes(commands.Cog):
-    """Save quotes and read them later."""
-    def __init__(self, bot):
+    """A quote formatter and poster"""
+    
+    default_guild = {"quotes": [], "min_role": 0, "next_available_id": 1, "channel": 0}
+    default_member = {"dms": False}
+
+    def __init__(self, bot: Red):
         self.bot = bot
-        self.config = Config.get_conf(self, 6133, force_registration=True)
+        self.settings = Config.get_conf(self, identifier=59595922, force_registration=True)
+        self.settings.register_guild(**self.default_guild)
+        self.settings.register_member(**self.default_member)
 
-        default_guild = {"quotes": []}
+    @commands.group()
+    @commands.guild_only()
+    async def quote(self, ctx: commands.Context):
+        """Base command for quotes
+        For settings us quoteset.
+        """
+        pass
 
-        self.config.register_guild(**default_guild)
+    @quote.command(name="create")
+    @allowed_to_create()
+    async def quote_create(self, ctx, *items):
+        """
+        Quote creation tool.
+        The quote will only be created if all information is provided properly.
+        If a minimum required role has been set, users must have that role or
+        higher, be in the mod/admin role, or be the guild owner in order to use this command
 
-    @staticmethod
-    def _get_random_quote(quotes: list):
-        if len(quotes) == 0:
-            return "There are no saved quotes!"
-        return randchoice(quotes)
-
-    @staticmethod
-    def _get_quote(num: int, quotes: list):
-        if num > 0 and num <= len(quotes):
-            return quotes[num - 1]
+        Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
+        """
+        items = [escape(c, mass_mentions=True) for c in items]
+        if len(items) != 2:
+            await ctx.send(error("Not properly formatted."))
         else:
-            return "That quote doesn't exist!"
+            content = items[0]
+            byfrom = items[1]
+            poster = ctx.author
+            embed=discord.Embed(title=content, description=byfrom)
+		    embed.set_footer(text=poster)
+    		await ctx.send(embed=embed)
 
-    async def _add_quote(self, ctx, message: str, quotes: list):
-        quotes = quotes + [message]
-        await self.config.guild(ctx.guild).quotes.set(quotes)
-
-    @staticmethod
-    def _fmt_quotes(quotes: list):
-        ret = ""
-        for num, quote in enumerate(quotes):
-            ret += f"{num + 1}) {quote}\n"
-        return ret
-
-    async def _try_to_dm(self, ctx, message: str):
-        try:
-            await ctx.author.send(message)
-        except discord.errors.Forbidden:
-            await ctx.send("I can't DM you, you've blocked me.")
-
-    @checks.mod_or_permissions(manage_guild=True)
+    @commands.group()
     @commands.guild_only()
-    @commands.command()
-    async def delquote(self, ctx, quote_number: int):
-        """Deletes a quote by its number.
+    async def quoteset(self, ctx: commands.Context):
+        """quote maker settings"""
+        pass
 
-           Use [p]allquotes to find quote numbers.
-           Example: [p]delquote 3"""
-        quotes = await self.config.guild(ctx.guild).quotes()
-        if quote_number > 0 and quote_number <= len(quotes):
-            for i in range(len(quotes)):
-                if quote_number - 1 == i:
-                    quotes.remove(quotes[i])
-                    await ctx.send(f"Quote number {quote_number} has been deleted.")
-            await self.config.guild(ctx.guild).quotes.set(quotes)
+    @quoteset.command(name="role")
+    @checks.admin_or_permissions(manage_guild=True)
+    async def quoteset_role(self, ctx: commands.Context, *, role: discord.Role = None):
+        """Set the minimum role required to create quotes.
+        Default is for everyone to be able to create quotes"""
+        guild = ctx.guild
+        if role is not None:
+            await self.settings.guild(guild).min_role.set(role.id)
+            await ctx.send("Role set to {}".format(role))
         else:
-            await ctx.send(f"Quote {quote_number} does not exist.")
+            await self.settings.guild(guild).min_role.set(0)
+            await ctx.send("Role unset!")
 
-    @checks.mod_or_permissions(manage_guild=True)
-    @commands.guild_only()
-    @commands.command()
-    async def delallquote(self, ctx, quote_number: int):
-        """Deletes all quotes for the guild."""
-        await self.config.guild(ctx.guild).quotes.set([])
-        await ctx.send("All quotes for this guild have been deleted.")
-
-    @commands.guild_only()
-    @commands.command()
-    async def allquotes(self, ctx):
-        """Gets a list of all quotes."""
-        quotes = await self.config.guild(ctx.guild).quotes()
-        if not quotes:
-            await ctx.send("There are no saved quotes!")
-            return
-        strbuffer = self._fmt_quotes(quotes)
-        for page in pagify(strbuffer, delims=["\n"], page_length=1980):
-            await self._try_to_dm(ctx, box(page))
-
-    @commands.guild_only()
-    @commands.command()
-    async def quote(self, ctx, *, message = None):
-        """Adds quote, retrieves random one, or a numbered one.
-               Use [p]allquotes to get a list of all quotes.
-
-           Example: [p]quote The quick brown fox -> adds quote
-                    [p]quote -> gets random quote
-                    [p]quote 4 -> gets quote #4"""
-        quotes = await self.config.guild(ctx.guild).quotes()
-        try:
-            message_number = int(message)
-            await ctx.send(self._get_quote(message_number, quotes))
-            return
-        except:
-            pass
-        if not message:
-            await ctx.send(self._get_random_quote(quotes))
-        else:
-            await self._add_quote(ctx, filter_various_mentions(message), quotes)
-            await ctx.send("Quote added.")
+    @quoteset.command(name="channel")
+    @checks.admin_or_permissions(manage_guild=True)
+    async def quoteset_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+        """
+        Sets the channel where quotes will be sent
+        If this is not set, the channel will default to the channel used
+        for new member messages (Server Settings > Overview > New Member
+        Messages Channel on desktop). If that is set to `No new member messages`,
+        the event start announcement will not be sent to a channel in the server
+        and will only be sent directly to the participants via DM
+        """
+        await self.settings.guild(ctx.guild).channel.set(channel.id)
+        await ctx.tick()
