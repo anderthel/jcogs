@@ -58,8 +58,8 @@ class Quotes(commands.Cog):
 		items = [escape(c, mass_mentions=True) for c in items]
 		if len(items) == 2:
 			channel = guild.get_channel(await self.settings.guild(guild).channel())
-					if channel is None:
-						channel = guild.system_channel
+				if channel is None:
+					channel = guild.system_channel
 			content = items[0]
 			byfrom = items[1]
 			poster = ctx.author
