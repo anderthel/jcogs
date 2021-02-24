@@ -4,27 +4,6 @@ from redbot.core import checks, commands, Config
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import escape
 
-def allowed_to_create():
-	async def pred(ctx):
-		if not ctx.guild:
-			return False
-		min_role_id = await ctx.cog.settings.guild(ctx.guild).min_role()
-		if min_role_id == 0:
-			min_role = ctx.guild.default_role
-		else:
-			min_role = discord.utils.get(ctx.guild.roles, id=min_role_id)
-		if ctx.author == ctx.guild.owner:
-			return True
-		elif await ctx.bot.is_mod(ctx.author):
-			return True
-		elif ctx.author.top_role in sorted(ctx.guild.roles)[min_role.position :]:
-			return True
-		else:
-			return False
-
-	return commands.check(pred)
-
-
 class Quotes(commands.Cog):
 	"""A quote formatter and poster"""
 	
@@ -46,7 +25,6 @@ class Quotes(commands.Cog):
 		pass
 
 	@quote.command(name="create")
-	@allowed_to_create()
 	async def quote_create(self, ctx, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
@@ -66,6 +44,7 @@ class Quotes(commands.Cog):
 			embed=discord.Embed(title="\"" + content + "\"", description="By\\From: " + byfrom)
 			embed.set_footer(text="Posted by: " + str(poster))
 			await channel.send(embed=embed)
+			await ctx.send("Posted")
 			
 		else:
 			await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
