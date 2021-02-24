@@ -47,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, ctx, *items, message: discord.message):
+	async def quote_create(self, ctx, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
@@ -56,8 +56,8 @@ class Quotes(commands.Cog):
 		Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
-		if len(items) == 3:
-			channel = message.guild.get_channel(await self.config.guild(message.guild).quoteset_channel())
+		if len(items) == 2:
+			channel = items.guild.get_channel(await self.config.guild(items.guild).quoteset_channel())
 			if channel is None:
 				channel = guild.system_channel
 			content = items[0]
