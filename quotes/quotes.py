@@ -2,6 +2,7 @@ import discord
 from redbot.core import commands
 from redbot.core import Config, commands, checks
 from redbot.core.bot import Red
+from redbot.core.utils.chat_formatting import escape
 
 def allowed_to_create():
     async def pred(ctx):
@@ -46,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, ctx, *items):
+	async def quote_create(self, ctx, *, ):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
