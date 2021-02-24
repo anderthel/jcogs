@@ -47,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, ctx: message, *items):
+	async def quote_create(self, ctx, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
@@ -55,9 +55,9 @@ class Quotes(commands.Cog):
 		The quote will only be created if all information is provided properly.
 		Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
 		"""
-		items = [escape(c, mass_mentions=True) for c in message]
+		items = [escape(c, mass_mentions=True) for c in items]
 		if len(items) == 2:
-			channel = await self.config.guild(message.guild).channel()
+			channel = member.guild.get_channel(await self.config.guild(member.guild).channel())
 			if channel is None:
 				channel = guild.system_channel
 			content = items[0]
@@ -65,9 +65,9 @@ class Quotes(commands.Cog):
 			poster = ctx.author
 			embed=discord.Embed(title=content, description=byfrom)
 			embed.set_footer(text=poster)
+			await ctx.send(embed=embed)
 			await channel.send(embed=embed)
-		
-
+			
 		else:
 			await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
 
