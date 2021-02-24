@@ -57,7 +57,7 @@ class Quotes(commands.Cog):
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
 		if len(items) == 2:
-			channel = self.settings.guild(ctx.guild).channel()
+			channel = message.guild.get_channel(await self.config.guild(message.guild).quoteset_channel())
 			if channel is None:
 				channel = guild.system_channel
 			content = items[0]
@@ -66,7 +66,7 @@ class Quotes(commands.Cog):
 			embed=discord.Embed(title=content, description=byfrom)
 			embed.set_footer(text=poster)
 			await ctx.send(embed=embed)
-			await ctx.channel.send(embed=embed)
+			await channel.send(embed=embed)
 			
 		else:
 			await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
