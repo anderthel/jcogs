@@ -1,6 +1,28 @@
 import discord
 from redbot.core import commands
 from redbot.core.bot import Red
+from redbot.core import commands, Config
+
+def allowed_to_create():
+    async def pred(ctx):
+        if not ctx.guild:
+            return False
+        min_role_id = await ctx.cog.settings.guild(ctx.guild).min_role()
+        if min_role_id == 0:
+            min_role = ctx.guild.default_role
+        else:
+            min_role = discord.utils.get(ctx.guild.roles, id=min_role_id)
+        if ctx.author == ctx.guild.owner:
+            return True
+        elif await ctx.bot.is_mod(ctx.author):
+            return True
+        elif ctx.author.top_role in sorted(ctx.guild.roles)[min_role.position :]:
+            return True
+        else:
+            return False
+
+    return commands.check(pred)
+
 
 class Quotes(commands.Cog):
 	"""A quote formatter and poster"""
