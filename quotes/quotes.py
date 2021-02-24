@@ -67,6 +67,7 @@ class Quotes(commands.Cog):
 			embed.set_footer(text=poster)
 			await ctx.send(embed=embed)
 			await self.channel.send(msg, embed=embed)
+			await ctx.send(channel)
 			
 		else:
 			await ctx.send("Not properly formatted. Porper format is double quotes surrounding quote followed by double quotes surrounding where its from/who its by")
