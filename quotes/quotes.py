@@ -60,12 +60,11 @@ class Quotes(commands.Cog):
 			channel = ctx.guild.get_channel(await self.settings.guild(ctx.guild).channel())
 			if channel is None:
 				channel = guild.system_channel
-			content = items[0]
-			byfrom = items[1]
-			poster = ctx.author
+			content = "\""items[0]"\""
+			byfrom = "By\\From "items[1]
+			poster = "Poser "ctx.author
 			embed=discord.Embed(title=content, description=byfrom)
 			embed.set_footer(text=poster)
-			await ctx.send(embed=embed)
 			await channel.send(embed=embed)
 			
 		else:
