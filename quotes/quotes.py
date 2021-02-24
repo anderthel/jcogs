@@ -39,7 +39,8 @@ class Quotes(commands.Cog):
 	@commands.group()
 	@commands.guild_only()
 	async def quote(self, ctx: commands.Context):
-		"""Base command for quotes"""
+		"""Base command for quotes
+		quoteset for settings"""
 		pass
 
 	@quote.command(name="create")
@@ -64,17 +65,16 @@ class Quotes(commands.Cog):
 		else:
 			await ctx.send("Not properly formatted.")
 
-	@quote.command(name="set")
 	@commands.group()
 	@checks.admin_or_permissions(manage_guild=True)
 	@commands.guild_only()
-	async def quote_set(self, ctx: commands.Context):
+	async def quoteset(self, ctx: commands.Context):
 		"""quote maker settings"""
 		pass
 
-	@set.command(name="role")
+	@quoteset.command(name="role")
 	@checks.admin_or_permissions(manage_guild=True)
-	async def quote_set_role(self, ctx: commands.Context, *, role: discord.Role = None):
+	async def quoteset_role(self, ctx: commands.Context, *, role: discord.Role = None):
 		"""Set the minimum role required to create quotes.
 		Default is for everyone to be able to create quotes"""
 		guild = ctx.guild
@@ -85,9 +85,9 @@ class Quotes(commands.Cog):
 			await self.settings.guild(guild).min_role.set(0)
 			await ctx.send("Role unset!")
 
-	@set.command(name="channel")
+	@quoteset.command(name="channel")
 	@checks.admin_or_permissions(manage_guild=True)
-	async def quote_set_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+	async def quoteset_channel(self, ctx: commands.Context, channel: discord.TextChannel):
 		"""
 		Sets the channel where quotes will be sent
 		If this is not set, the channel will default to the channel used
