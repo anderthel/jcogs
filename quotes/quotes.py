@@ -71,7 +71,7 @@ class Quotes(commands.Cog):
 		"""quote maker settings"""
 		pass
 
-	@quote.set.command(name="role")
+	@set.command(name="role")
 	@checks.admin_or_permissions(manage_guild=True)
 	async def quote_set_role(self, ctx: commands.Context, *, role: discord.Role = None):
 		"""Set the minimum role required to create quotes.
@@ -84,7 +84,7 @@ class Quotes(commands.Cog):
 			await self.settings.guild(guild).min_role.set(0)
 			await ctx.send("Role unset!")
 
-	@quoteset.command(name="channel")
+	@set.command(name="channel")
 	@checks.admin_or_permissions(manage_guild=True)
 	async def quote_set_channel(self, ctx: commands.Context, channel: discord.TextChannel):
 		"""
