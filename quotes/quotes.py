@@ -47,7 +47,7 @@ class Quotes(commands.Cog):
 
 	@quote.command(name="create")
 	@allowed_to_create()
-	async def quote_create(self, ctx, *, ):
+	async def quote_create(self, ctx, *items):
 		"""
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
