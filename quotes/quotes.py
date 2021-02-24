@@ -36,18 +36,22 @@ class Quotes(commands.Cog):
 		self.settings.register_guild(**self.default_guild)
 		self.settings.register_member(**self.default_member)
 
-	@commands.command()
-	@allowed_to_create()
+	@commands.group()
 	@commands.guild_only()
-	async def quote(self, ctx, *items):
+	async def quote(self, ctx: commands.Context):
+		"""Base command for quote creation tool.
+		
+		Use quoteset for settings"""
+		pass
+
+	@quote.command(name="create")
+	@allowed_to_create()
+	async def quote_create(self, ctx, *items):
 		"""
-		Quote creation tool.
-		The quote will only be created if all information is provided properly.
 		If a minimum required role has been set, users must have that role or
 		higher, be in the mod/admin role, or be the guild owner in order to use this command
-
-		To configure use [p]quoteset
-
+		
+		The quote will only be created if all information is provided properly.
 		Porper format is Double quotes surrounding quote followed by double quotes surrounding where its from/who its by
 		"""
 		items = [escape(c, mass_mentions=True) for c in items]
