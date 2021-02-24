@@ -1,6 +1,7 @@
 {
-    "author" : ["Anderthel (Bodged together from multiple other cogs)"],
+    "author" : ["Anderthel"],
     "install_msg" : "Warning, I am a novice coder and as such these are only meant to be use by me",
-    "name" : "Quotes",
-    "short" : "Embed Quotes in a set channel",
+    "name" : "quotes",
+    "short" : "quotes are great",
+    "description" : "used to put quotes in a dedicated channel as embeds",
 }
