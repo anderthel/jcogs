@@ -66,7 +66,6 @@ class Quotes(commands.Cog):
 		#	embed=discord.Embed(title=content, description=byfrom)
 		#	embed.set_footer(text=poster)
 		#	await channel.send(embed=embed)
-		await message.send(len(message))
 		await message.send(message)
 
 		#else:
