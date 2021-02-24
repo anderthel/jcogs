@@ -41,7 +41,8 @@ class Quotes(commands.Cog):
 			content = items[0]
 			byfrom = items[1]
 			poster = ctx.author
-			embed=discord.Embed(title="\"" + content + "\"", description="By\\From: " + byfrom)
+			embed=discord.Embed()
+			embed.add_field(name="\"" + content + "\"", value="By\\From: " + byfrom, inline=False)
 			embed.set_footer(text="Posted by: " + str(poster))
 			await channel.send(embed=embed)
 			await ctx.send("Posted")
