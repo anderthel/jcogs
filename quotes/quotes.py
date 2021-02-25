@@ -92,7 +92,7 @@ class Quotes(commands.Cog):
 			author = items[1]
 			content = quote + " - " + author
 			quoteimage = self.quoteImg(content)
-			imfile = discord.File(fp=image, filename="image.png")
+			imfile = discord.File(fp=quoteimage, filename="image.png")
 			embed=discord.Embed(description=content)
 			embed.set_image(url="attachment://" + quoteimage)
 			await channel.send(embed=embed, file=imfile)
