@@ -35,15 +35,15 @@ class Quotes(commands.Cog):
 		for letter in sentence:
 			if(letter == '-'):
 				fresh_sentence += '\n\n' + letter
-		elif(incrementer < number_of_letters_for_each_line):
-			fresh_sentence += letter
-		else:
-			if(letter == ' '):
-				fresh_sentence += '\n'
-		incrementer = 0
-		else:
-			fresh_sentence += letter
-		incrementer+=1
+			elif(incrementer < number_of_letters_for_each_line):
+				fresh_sentence += letter
+			else:
+				if(letter == ' '):
+					fresh_sentence += '\n'
+					incrementer = 0
+				else:
+					fresh_sentence += letter
+			incrementer+=1
 		#render the text in the center of the box
 		dim = d.textsize(fresh_sentence, font=fnt)
 		x2 = dim[0]
