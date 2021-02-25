@@ -36,7 +36,7 @@ class Quotes(commands.Cog):
 		#add some line breaks
 		for letter in sentence:
 			if(letter == '#'):
-				fresh_sentence += '\n\n' + letter
+				fresh_sentence += '\n\n' + '-'
 			elif(incrementer < number_of_letters_for_each_line):
 				fresh_sentence += letter
 			else:
@@ -93,7 +93,7 @@ class Quotes(commands.Cog):
 			content = quote + " # " + author
 			quoteimage = self.quoteImg(content)
 			imfile = discord.File(fp=quoteimage, filename="image.png")
-			embed=discord.Embed(description=content)
+			embed=discord.Embed(description=quote + " - " + author)
 			embed.set_image(url="attachment://" + quoteimage)
 			await channel.send(embed=embed, file=imfile)
 			await ctx.send("Posted")
