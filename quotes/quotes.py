@@ -54,8 +54,9 @@ class Quotes(commands.Cog):
 		qy = (y1/2-y2/2)
 		# fill is the text color
 		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
-		img.save('/data/cogs/CogManager/cogs/quotes/image.png')
-		return image.png
+		location = "/data/cogs/CogManager/cogs/quotes/image.png"
+		img.save(location)
+		return location
 
 		
 
