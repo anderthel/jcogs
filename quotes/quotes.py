@@ -48,7 +48,7 @@ class Quotes(commands.Cog):
 			#define quote
 			sentence = content
 			#set font
-			fnt = ImageFont.truetype('font.ttf', 40)
+			fnt = ImageFont.truetype('./font.ttf', 40)
 			# color is the backgroundColor of the Image
 			img = Image.new('RGB', (x1, y1), color = (0,0,0))
 			d = ImageDraw.Draw(img)
