@@ -94,7 +94,7 @@ class Quotes(commands.Cog):
 			quoteimage = self.quoteImg(content)
 			embed=discord.Embed(description=content)
 			embed.set_image(url="attachment://" + quoteimage)
-			await channel.send(embed=embed, file=image)
+			await channel.send(embed=embed, file=quoteimage)
 			await ctx.send("Posted")
 			
 		else:
