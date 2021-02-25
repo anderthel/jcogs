@@ -55,8 +55,6 @@ class Quotes(commands.Cog):
 		# fill is the text color
 		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
 		img.save('image.png')
-		return image.png
-
 		
 
 	def __init__(self, bot: Red):
@@ -90,7 +88,7 @@ class Quotes(commands.Cog):
 			quote = items[0]
 			author = items[1]
 			content = quote + " - " + author
-			quoteimage = self.quoteImg()
+			self.quoteImg()
 
 			embed=discord.Embed(description=content)
 			embed.set_image(url="attachment://" + quoteimage)
