@@ -25,7 +25,7 @@ class Quotes(commands.Cog):
 		#find the average size of the letter
 		sum = 0
 		for letter in sentence:
-		sum += d.textsize(letter, font=fnt)[0]
+			sum += d.textsize(letter, font=fnt)[0]
 		average_length_of_letter = sum/len(sentence)
 		#find the number of letters to be put on each line
 		number_of_letters_for_each_line = (x1/1.618)/average_length_of_letter
@@ -33,16 +33,16 @@ class Quotes(commands.Cog):
 		fresh_sentence = ''
 		#add some line breaks
 		for letter in sentence:
-		if(letter == '-'):
-		fresh_sentence += '\n\n' + letter
+			if(letter == '-'):
+				fresh_sentence += '\n\n' + letter
 		elif(incrementer < number_of_letters_for_each_line):
-		fresh_sentence += letter
+			fresh_sentence += letter
 		else:
-		if(letter == ' '):
-		fresh_sentence += '\n'
+			if(letter == ' '):
+				fresh_sentence += '\n'
 		incrementer = 0
 		else:
-		fresh_sentence += letter
+			fresh_sentence += letter
 		incrementer+=1
 		#render the text in the center of the box
 		dim = d.textsize(fresh_sentence, font=fnt)
