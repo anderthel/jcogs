@@ -13,7 +13,7 @@ class Quotes(commands.Cog):
 	default_guild = {"quotes": [], "min_role": 0, "next_available_id": 1, "channel": 0}
 	default_member = {"dms": False}
 
-	def quoteImg():
+	def quoteImg(self):
 		#variables for image size
 		x1 = 1024 
 		y1 = 1024
@@ -55,6 +55,8 @@ class Quotes(commands.Cog):
 		# fill is the text color
 		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
 		img.save('image.png')
+		return image.png
+
 		
 
 	def __init__(self, bot: Red):
@@ -88,7 +90,7 @@ class Quotes(commands.Cog):
 			quote = items[0]
 			author = items[1]
 			content = quote + " - " + author
-			self.quoteImg()
+			quoteimage = quoteImg()
 
 			embed=discord.Embed(description=content)
 			embed.set_image(url="attachment://" + quoteimage)
