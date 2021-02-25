@@ -4,6 +4,8 @@ from redbot.core import checks, commands, Config
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import escape
 from PIL import Image, ImageDraw, ImageFont
+import hashlib
+
 
 class Quotes(commands.Cog):
 	"""A quote formatter and poster"""
@@ -53,7 +55,9 @@ class Quotes(commands.Cog):
 		# fill is the text color
 		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
 		img.save('image.png')
+		return image.png
 
+		
 
 	def __init__(self, bot: Red):
 		self.bot = bot
@@ -86,10 +90,10 @@ class Quotes(commands.Cog):
 			quote = items[0]
 			author = items[1]
 			content = quote + " - " + author
-			quoteImg()
+			quoteimage = quoteImg()
 
 			embed=discord.Embed(description=content)
-			embed.set_image(url="attachment://image.png")
+			embed.set_image(url="attachment://" + quoteimage)
 			await channel.send(embed=embed, file=image)
 			await ctx.send("Posted")
 			
