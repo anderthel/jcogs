@@ -4,12 +4,60 @@ from redbot.core import checks, commands, Config
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import escape
 from PIL import Image, ImageDraw, ImageFont
+import hashlib
+
 
 class Quotes(commands.Cog):
 	"""A quote formatter and poster"""
 	
 	default_guild = {"quotes": [], "min_role": 0, "next_available_id": 1, "channel": 0}
 	default_member = {"dms": False}
+
+	def quoteImg(self, content):
+		#variables for image size
+		x1 = 1024 
+		y1 = 1024
+		#define quote
+		sentence = content
+		#set font
+		fnt = ImageFont.truetype('font.ttf', 40)
+		# color is the backgroundColor of the Image
+		img = Image.new('RGB', (x1, y1), color = (0,0,0))
+		d = ImageDraw.Draw(img)
+		#find the average size of the letter
+		sum = 0
+		for letter in sentence:
+			sum += d.textsize(letter, font=fnt)[0]
+		average_length_of_letter = sum/len(sentence)
+		#find the number of letters to be put on each line
+		number_of_letters_for_each_line = (x1/1.618)/average_length_of_letter
+		incrementer = 0
+		fresh_sentence = ''
+		#add some line breaks
+		for letter in sentence:
+			if(letter == '-'):
+				fresh_sentence += '\n\n' + letter
+			elif(incrementer < number_of_letters_for_each_line):
+				fresh_sentence += letter
+			else:
+				if(letter == ' '):
+					fresh_sentence += '\n'
+					incrementer = 0
+				else:
+					fresh_sentence += letter
+			incrementer+=1
+		#render the text in the center of the box
+		dim = d.textsize(fresh_sentence, font=fnt)
+		x2 = dim[0]
+		y2 = dim[1]
+		qx = (x1/2 - x2/2)
+		qy = (y1/2-y2/2)
+		# fill is the text color
+		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
+		img.save('image.png')
+		return image.png
+
+		
 
 	def __init__(self, bot: Red):
 		self.bot = bot
@@ -42,50 +90,9 @@ class Quotes(commands.Cog):
 			quote = items[0]
 			author = items[1]
 			content = quote + " - " + author
-			#variables for image size
-			x1 = 1024 
-			y1 = 1024
-			#define quote
-			sentence = content
-			#set font
-			fnt = ImageFont.truetype('./font.ttf', 40)
-			# color is the backgroundColor of the Image
-			img = Image.new('RGB', (x1, y1), color = (0,0,0))
-			d = ImageDraw.Draw(img)
-			#find the average size of the letter
-			sum = 0
-			for letter in sentence:
-				sum += d.textsize(letter, font=fnt)[0]
-			average_length_of_letter = sum/len(sentence)
-			#find the number of letters to be put on each line
-			number_of_letters_for_each_line = (x1/1.618)/average_length_of_letter
-			incrementer = 0
-			fresh_sentence = ''
-			#add some line breaks
-			for letter in sentence:
-				if(letter == '-'):
-					fresh_sentence += '\n\n' + letter
-				elif(incrementer < number_of_letters_for_each_line):
-					fresh_sentence += letter
-				else:
-					if(letter == ' '):
-						fresh_sentence += '\n'
-						incrementer = 0
-					else:
-						fresh_sentence += letter
-				incrementer+=1
-			#render the text in the center of the box
-			dim = d.textsize(fresh_sentence, font=fnt)
-			x2 = dim[0]
-			y2 = dim[1]
-			qx = (x1/2 - x2/2)
-			qy = (y1/2-y2/2)
-			# fill is the text color
-			d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
-			img.save('image.png')
-
+			quoteimage = self.quoteImg(content)
 			embed=discord.Embed(description=content)
-			embed.set_image(url="attachment://image.png")
+			embed.set_image(url="attachment://" + quoteimage)
 			await channel.send(embed=embed, file=image)
 			await ctx.send("Posted")
 			
