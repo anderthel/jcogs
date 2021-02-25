@@ -90,7 +90,7 @@ class Quotes(commands.Cog):
 			quote = items[0]
 			author = items[1]
 			content = quote + " - " + author
-			quoteimage = quoteImg()
+			quoteimage = self.quoteImg()
 
 			embed=discord.Embed(description=content)
 			embed.set_image(url="attachment://" + quoteimage)
