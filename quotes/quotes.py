@@ -20,7 +20,7 @@ class Quotes(commands.Cog):
 		#define quote
 		sentence = content
 		#set font
-		fnt = ImageFont.truetype('/font.ttf', 40)
+		fnt = ImageFont.truetype('/data/cogs/CogManager/cogs/quotes/font.ttf', 40)
 		# color is the backgroundColor of the Image
 		img = Image.new('RGB', (x1, y1), color = (0,0,0))
 		d = ImageDraw.Draw(img)
@@ -54,7 +54,7 @@ class Quotes(commands.Cog):
 		qy = (y1/2-y2/2)
 		# fill is the text color
 		d.text((qx,qy), fresh_sentence ,align="center", font=fnt, fill=(255, 255, 255))
-		img.save('./image.png')
+		img.save('/data/cogs/CogManager/cogs/quotes/image.png')
 		return image.png
 
 		
