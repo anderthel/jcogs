@@ -4,7 +4,6 @@ from redbot.core import checks, commands, Config
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import escape
 from PIL import Image, ImageDraw, ImageFont
-import hashlib
 
 
 class Quotes(commands.Cog):
