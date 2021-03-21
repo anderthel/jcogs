@@ -1,0 +1,10 @@
+{
+    "author" : ["jn8416"],
+    "install_msg" : "Use this cog at your own risk.",
+    "name" : "quotes",
+    "short" : "A cog for creating quote images",
+    "requirements" : ["pillow"],
+    "description" : "Creates images with the supplied quote",
+    "permissions" : [""],
+    "tags" : [""]
+}
